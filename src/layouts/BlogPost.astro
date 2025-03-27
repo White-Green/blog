@@ -7,7 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, author = 'default' } = Astro.props;
 ---
 
 <html lang="en">
@@ -51,6 +51,17 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
+			.author {
+				margin-top: 0.5em;
+				color: rgb(var(--gray));
+			}
+			.author a {
+				color: rgb(var(--accent));
+				text-decoration: none;
+			}
+			.author a:hover {
+				text-decoration: underline;
+			}
 		</style>
 	</head>
 
@@ -74,6 +85,11 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 							}
 						</div>
 						<h1>{title}</h1>
+						{author && (
+							<div class="author">
+								By <a href={`/users/${author}`}>{author}</a>
+							</div>
+						)}
 						<hr />
 					</div>
 					<slot />

@@ -12,7 +12,22 @@ const blog = defineCollection({
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
+		author: z.string().optional(),
 	}),
 });
 
-export const collections = { blog };
+const users = defineCollection({
+	// Load YAML files in the `src/content/users/` directory.
+	loader: glob({ base: './src/content/users', pattern: '**/*.yml' }),
+	// Type-check frontmatter using a schema
+	schema: z.object({
+		name: z.string(),
+		bio: z.string(),
+		avatar: z.string().optional(),
+		website: z.string().url().optional(),
+		twitter: z.string().optional(),
+		github: z.string().optional(),
+	}),
+});
+
+export const collections = { blog, users };

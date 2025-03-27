@@ -1,0 +1,134 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+
+export async function getStaticPaths() {
+    const users = await getCollection('users');
+    return users.map(user => ({
+        params: { username: user.id },
+        props: { user },
+    }));
+}
+
+const { username } = Astro.params;
+const { user } = Astro.props;
+
+// Get all blog posts by this author
+const allPosts = await getCollection('blog');
+const authorPosts = allPosts.filter(post => post.data.author === username);
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={`${user.data.name} - ${SITE_TITLE}`} description={user.data.bio} />
+		<style>
+			.user-profile {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				margin: 2em 0;
+				text-align: center;
+			}
+			.avatar {
+				width: 150px;
+				height: 150px;
+				border-radius: 50%;
+				object-fit: cover;
+				margin-bottom: 1em;
+			}
+			.user-name {
+				font-size: 2em;
+				margin: 0.5em 0;
+			}
+			.user-bio {
+				max-width: 600px;
+				margin: 0 auto 2em;
+				color: rgb(var(--gray-dark));
+			}
+			.social-links {
+				display: flex;
+				gap: 1em;
+				margin-bottom: 2em;
+			}
+			.social-links a {
+				color: rgb(var(--accent));
+				text-decoration: none;
+			}
+			.social-links a:hover {
+				text-decoration: underline;
+			}
+			.posts-section {
+				max-width: 720px;
+				margin: 2em auto;
+				padding: 0 1em;
+			}
+			.posts-section h2 {
+				margin-bottom: 1em;
+				border-bottom: 1px solid rgba(var(--gray), 0.2);
+				padding-bottom: 0.5em;
+			}
+			.post-list {
+				list-style: none;
+				padding: 0;
+			}
+			.post-item {
+				margin-bottom: 1em;
+			}
+			.post-link {
+				color: rgb(var(--accent));
+				text-decoration: none;
+				font-weight: bold;
+			}
+			.post-link:hover {
+				text-decoration: underline;
+			}
+			.post-date {
+				color: rgb(var(--gray));
+				font-size: 0.9em;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="user-profile">
+				{user.data.avatar && <img class="avatar" src={user.data.avatar} alt={user.data.name} />}
+				<h1 class="user-name">{user.data.name}</h1>
+				<p class="user-bio">{user.data.bio}</p>
+
+				<div class="social-links">
+					{user.data.website && <a href={user.data.website} target="_blank">Website</a>}
+					{user.data.twitter && <a href={`https://twitter.com/${user.data.twitter}`} target="_blank">Twitter</a>}
+					{user.data.github && <a href={`https://github.com/${user.data.github}`} target="_blank">GitHub</a>}
+				</div>
+			</div>
+
+
+			{authorPosts.length > 0 && (
+				<div class="posts-section">
+					<h2>Articles by {user.data.name}</h2>
+					<ul class="post-list">
+						{authorPosts.map(post => (
+							<li class="post-item">
+								<a class="post-link" href={`/articles/${post.id}/`}>{post.data.title}</a>
+								<p class="post-date">
+									<time datetime={post.data.pubDate.toISOString()}>
+										{post.data.pubDate.toLocaleDateString('en-us', {
+											year: 'numeric',
+											month: 'short',
+											day: 'numeric',
+										})}
+									</time>
+								</p>
+							</li>
+						))}
+					</ul>
+				</div>
+			)}
+		</main>
+		<Footer />
+	</body>
+</html>
