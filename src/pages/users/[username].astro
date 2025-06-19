@@ -4,6 +4,7 @@ import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { SITE_TITLE } from '../../consts';
+import FormattedDate from "../../components/FormattedDate.astro";
 
 export async function getStaticPaths() {
     const users = await getCollection('users');
@@ -17,11 +18,11 @@ const { username } = Astro.params;
 const { user } = Astro.props;
 
 // Get all blog posts by this author
-const allPosts = await getCollection('blog');
+const allPosts = await getCollection('articles');
 const authorPosts = allPosts.filter(post => post.data.author === username);
 ---
 
-<html lang="en">
+<html lang="ja">
 	<head>
 		<BaseHead title={`${user.data.name} - ${SITE_TITLE}`} description={user.data.bio} />
 		<style>
@@ -115,13 +116,7 @@ const authorPosts = allPosts.filter(post => post.data.author === username);
 							<li class="post-item">
 								<a class="post-link" href={`/articles/${post.id}/`}>{post.data.title}</a>
 								<p class="post-date">
-									<time datetime={post.data.pubDate.toISOString()}>
-										{post.data.pubDate.toLocaleDateString('en-us', {
-											year: 'numeric',
-											month: 'short',
-											day: 'numeric',
-										})}
-									</time>
+									<FormattedDate date={post.data.pubDate} />
 								</p>
 							</li>
 						))}

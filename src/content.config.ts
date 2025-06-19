@@ -1,7 +1,7 @@
 import { glob } from 'astro/loaders';
 import { defineCollection, z } from 'astro:content';
 
-const blog = defineCollection({
+const articles = defineCollection({
 	// Load Markdown and MDX files in the `articles/` directory.
 	loader: glob({ base: './articles', pattern: '**/*.{md,mdx}' }),
 	// Type-check frontmatter using a schema
@@ -9,10 +9,10 @@ const blog = defineCollection({
 		title: z.string(),
 		description: z.string(),
 		// Transform string to Date object
-		pubDate: z.coerce.date(),
-		updatedDate: z.coerce.date().optional(),
+		pubDate: z.string().datetime({ offset: true }),
+		updatedDate: z.string().datetime({ offset: true }).optional(),
 		heroImage: z.string().optional(),
-		author: z.string().optional(),
+		author: z.string(),
 	}),
 });
 
@@ -30,4 +30,4 @@ const users = defineCollection({
 	}),
 });
 
-export const collections = { blog, users };
+export const collections = { articles, users };
