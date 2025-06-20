@@ -29,9 +29,9 @@ jobs:
       - uses: White-Green/fblog_system@custom_actions
         with:
           target: cloudflare_workers
-          article_data_path: ./articles
-          user_data_path: ./users
-          build_data_path: ./dist
+          article_data_path: ${{ github.workspace }}/articles
+          user_data_path: ${{ github.workspace }}/users
+          build_data_path: ${{ github.workspace }}/dist
           wrangler_account_id: XX
           wrangler_name: XX
           wrangler_url: XX
