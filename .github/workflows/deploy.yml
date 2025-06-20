@@ -32,6 +32,6 @@ jobs:
           article_data_path: ${{ github.workspace }}/articles
           user_data_path: ${{ github.workspace }}/users
           build_data_path: ${{ github.workspace }}/dist
-          wrangler_account_id: XX
-          wrangler_name: XX
-          wrangler_url: XX
+          site_url: https://blog.white-green.net
+          cloudflare_account_id: XX
+          cloudflare_api_token: XX
