@@ -32,6 +32,7 @@ jobs:
           article_data_path: ${{ github.workspace }}/articles
           user_data_path: ${{ github.workspace }}/users
           build_data_path: ${{ github.workspace }}/dist
+          project_name: "white-green-blog"
           site_url: https://blog.white-green.net
-          cloudflare_account_id: XX
-          cloudflare_api_token: XX
+          cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
