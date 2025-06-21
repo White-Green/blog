@@ -31,9 +31,12 @@ jobs:
           target: cloudflare_workers
           article_data_path: ${{ github.workspace }}/articles
           user_data_path: ${{ github.workspace }}/users
+          article_snapshot_path: ${{ github.workspace }}/article_snapshot
           build_data_path: ${{ github.workspace }}/dist
           project_name: "white-green-blog"
           site_url: https://blog.white-green.net
           public_key_path: ${{ github.workspace }}/publickey.pem
           cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - run: cat ./article_snapshot
