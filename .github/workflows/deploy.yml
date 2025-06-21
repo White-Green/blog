@@ -39,4 +39,16 @@ jobs:
           cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
-      - run: cat ./article_snapshot
+      - name: Check for article_snapshot changes
+        id: check_changes
+        run: |
+          git diff --quiet ./article_snapshot || echo "has_changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit changes of snapshot
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add ./article_snapshot
+          git commit -m "Update article_snapshot [skip ci]"
+          git push
