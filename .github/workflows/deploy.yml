@@ -34,5 +34,6 @@ jobs:
           build_data_path: ${{ github.workspace }}/dist
           project_name: "white-green-blog"
           site_url: https://blog.white-green.net
+          public_key_path: ${{ github.workspace }}/publickey.pem
           cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}

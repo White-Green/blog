@@ -8,5 +8,6 @@
 !/astro.config.mjs
 !/package.json
 !/pnpm-lock.yaml
+!/publickey.pem
 !/README.md
 !/tsconfig.json
