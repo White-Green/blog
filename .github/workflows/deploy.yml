@@ -39,16 +39,19 @@ jobs:
           cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
-      - name: Check for article_snapshot changes
-        id: check_changes
-        run: |
-          git diff --quiet ./article_snapshot || echo "has_changes=true" >> $GITHUB_OUTPUT
-
       - name: Commit changes of snapshot
-        if: steps.check_changes.outputs.has_changes == 'true'
         run: |
+          if [ ! -d "./article_snapshot" ]; then
+            exit 0
+          fi
+
+          if [ -z "$(git status --porcelain ./article_snapshot)" ]; then
+            exit 0
+          fi
+
+          # 差分あり → コミット & プッシュ
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add ./article_snapshot
+          git add -f ./article_snapshot
           git commit -m "Update article_snapshot [skip ci]"
           git push
