@@ -41,10 +41,6 @@ jobs:
 
       - name: Commit changes of snapshot
         run: |
-          if [ ! -d "./article_snapshot" ]; then
-            exit 0
-          fi
-
           git add -f ./article_snapshot
           
           if [ -z "$(git status --porcelain ./article_snapshot)" ]; then
