@@ -31,24 +31,9 @@ jobs:
           target: cloudflare_workers
           article_data_path: ${{ github.workspace }}/articles
           user_data_path: ${{ github.workspace }}/users
-          article_snapshot_path: ${{ github.workspace }}/article_snapshot
           build_data_path: ${{ github.workspace }}/dist
           project_name: "white-green-blog"
           site_url: https://blog.white-green.net
           public_key_path: ${{ github.workspace }}/publickey.pem
           cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-
-      - name: Commit changes of snapshot
-        run: |
-          git add -f ./article_snapshot
-          
-          if [ -z "$(git status --porcelain ./article_snapshot)" ]; then
-            echo "No changes."
-            exit 0
-          fi
-
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git commit -m "Update article_snapshot [skip ci]"
-          git push
