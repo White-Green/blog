@@ -26,7 +26,7 @@ jobs:
       - name: Build site
         run: pnpm run build
 
-      - uses: White-Green/fblog_system@custom_actions
+      - uses: White-Green/fblog_system@main
         with:
           target: cloudflare_workers
           article_data_path: ${{ github.workspace }}/articles
