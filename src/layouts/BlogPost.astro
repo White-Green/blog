@@ -2,10 +2,15 @@
 import type {CollectionEntry} from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import { getCollection } from 'astro:content';
 
 export type Props = CollectionEntry<'articles'>['data'];
 
 const {title, description, pubDate, updatedDate, heroImage, author} = Astro.props;
+
+// Get the user's display name
+const users = await getCollection('users');
+const userData = users.find(user => user.id === author);
 
 const customStyles = `
 	main {
@@ -108,7 +113,7 @@ const customStyles = `
                 <h1>{title}</h1>
                 {author && (
                         <div class="author">
-                            By <a href={`/users/${author}`}>{author}</a>
+                            By <a href={`/users/${author}`}>{userData?.data.name || author}</a>
                         </div>
                 )}
                 <hr/>
