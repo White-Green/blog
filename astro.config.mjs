@@ -5,18 +5,24 @@ import sitemap from '@astrojs/sitemap';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
+import react from '@astrojs/react';
+
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://example.com',
-	integrations: [
-		mdx({
-			remarkPlugins: [remarkMath],
-			rehypePlugins: [rehypeKatex],
-		}),
-		sitemap()
-	],
-	markdown: {
-		remarkPlugins: [remarkMath],
-		rehypePlugins: [rehypeKatex],
-	},
+    site: 'https://example.com',
+    integrations: [mdx({
+        remarkPlugins: [remarkMath],
+        rehypePlugins: [rehypeKatex],
+		}), sitemap(), react()],
+    markdown: {
+        remarkPlugins: [remarkMath],
+        rehypePlugins: [rehypeKatex],
+    },
+    vite: {
+        build: {
+            rollupOptions: {
+                external: ['satori', 'sharp', '@resvg/resvg-js']
+            }
+        }
+    }
 });

@@ -1,101 +1,157 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import type {CollectionEntry} from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+export type Props = CollectionEntry<'articles'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage, author } = Astro.props;
+const {title, description, pubDate, updatedDate, heroImage, author} = Astro.props;
+
+const customStyles = `
+	main {
+		width: calc(100% - 2em);
+		max-width: 100%;
+		margin: 0;
+	}
+	.hero-image {
+		width: 100%;
+	}
+	.hero-image img {
+		display: block;
+		margin: 0 auto;
+		border-radius: 12px;
+		box-shadow: var(--box-shadow);
+	}
+	.prose {
+		width: 720px;
+		max-width: calc(100% - 2em);
+		margin: auto;
+		padding: 1em;
+		color: rgb(var(--gray-dark));
+	}
+	.title {
+		margin-bottom: 1em;
+		padding: 1em 0;
+		text-align: center;
+		line-height: 1;
+	}
+	.title h1 {
+		margin: 0 0 0.5em 0;
+	}
+	.date {
+		margin-bottom: 0.5em;
+		color: rgb(var(--gray));
+	}
+	.last-updated-on {
+		font-style: italic;
+	}
+	.author {
+		margin-top: 0.5em;
+		color: rgb(var(--gray));
+	}
+	.author a {
+		color: rgb(var(--accent));
+		text-decoration: none;
+	}
+	.author a:hover {
+		text-decoration: underline;
+	}
+	.share-buttons {
+		display: flex;
+		gap: 0.5em;
+		position: fixed;
+		right: 1em;
+		top: 50%;
+		transform: translateY(-50%);
+		flex-direction: column;
+	}
+	.share-buttons a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5em;
+		border-radius: 50%;
+		text-decoration: none;
+		color: rgb(var(--gray));
+		background-color: rgba(var(--gray-light), 0.3);
+		transition: color 0.2s, background-color 0.2s;
+	}
+	.share-buttons a:hover {
+		color: rgb(var(--gray-dark));
+		background-color: rgba(var(--gray-light), 0.6);
+	}
+	.share-buttons svg {
+		width: 18px;
+		height: 18px;
+	}
+`;
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-			.author {
-				margin-top: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.author a {
-				color: rgb(var(--accent));
-				text-decoration: none;
-			}
-			.author a:hover {
-				text-decoration: underline;
-			}
-		</style>
-	</head>
+<BaseLayout title={title} description={description} customStyles={customStyles}>
+    <article>
+        <div class="hero-image">
+            {heroImage && <img width={1020} height={510} src={heroImage} alt=""/>}
+        </div>
+        <div class="prose">
+            <div class="title">
+                <div class="date">
+                    <FormattedDate date={pubDate}/>
+                    {
+                        updatedDate && (
+                                    <div class="last-updated-on">
+                                        Last updated on
+                                        <FormattedDate date={updatedDate}/>
+                                    </div>
+                        )
+                    }
+                </div>
+                <h1>{title}</h1>
+                {author && (
+                        <div class="author">
+                            By <a href={`/users/${author}`}>{author}</a>
+                        </div>
+                )}
+                <hr/>
+            </div>
+            <slot/>
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						{author && (
-							<div class="author">
-								By <a href={`/users/${author}`}>{author}</a>
-							</div>
-						)}
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+            <div class="share-buttons">
+                <a href={`https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(Astro.url)}`}
+                   target="_blank" title="Share on X">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="currentColor"
+                              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                    </svg>
+                    <span class="sr-only">Share on X</span>
+                </a>
+                <a href={`https://misskey.io/share?text=${encodeURIComponent(title)}&url=${encodeURIComponent(Astro.url)}`}
+                   target="_blank" title="Share on Misskey">
+                    <svg class='bi' fill='currentColor' viewBox='0 0 160 160' version='1.1'
+                         xmlns='http://www.w3.org/2000/svg' aria-hidden='true'
+                         xml:space='preserve'
+                         style='fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;'>
+                        <g transform='matrix(0.28948,0,0,0.28948,-54.705,-30.7703)'>
+                            <path d='M256.418,188.976C248.558,188.944 240.758,190.308 233.379,193.013C220.308,197.613 209.533,205.888 201.091,217.802C193.02,229.329 188.977,242.195 188.977,256.409L188.977,508.89C188.977,527.332 195.52,543.29 208.576,556.732C222.032,569.803 237.99,576.331 256.418,576.331C275.259,576.331 291.204,569.803 304.274,556.747C317.73,543.291 324.441,527.332 324.441,508.89L324.441,462.983C324.584,453.04 334.824,455.655 340.01,462.983C349.691,479.76 372.36,494.119 394.193,494.119C416.026,494.119 438.005,482.196 448.375,462.983C452.304,458.354 463.377,450.455 464.52,462.983L464.52,508.89C464.52,527.332 471.047,543.29 484.104,556.732C497.574,569.803 513.511,576.331 531.953,576.331C550.78,576.331 566.739,569.803 579.809,556.747C593.265,543.291 599.977,527.332 599.977,508.89L599.977,256.409C599.977,242.195 595.752,229.329 587.309,217.802C579.224,205.874 568.653,197.613 555.597,193.013C547.912,190.314 540.228,188.976 532.543,188.976C511.788,188.976 494.301,197.046 480.073,213.188L411.636,293.281C410.107,294.438 405.006,303.247 394.178,303.247C383.379,303.247 378.868,294.439 377.325,293.296L308.297,213.188C294.47,197.046 277.173,188.976 256.418,188.976ZM682.904,188.983C666.763,188.983 652.926,194.748 641.404,206.271C630.261,217.413 624.691,231.054 624.691,247.196C624.691,263.338 630.261,277.174 641.404,288.697C652.926,299.839 666.763,305.41 682.904,305.41C699.046,305.41 712.88,299.839 724.412,288.697C735.935,277.174 741.693,263.338 741.693,247.196C741.693,231.054 735.935,217.413 724.412,206.271C712.88,194.748 699.046,188.983 682.904,188.983ZM683.473,316.947C667.331,316.947 653.495,322.713 641.972,334.236C630.449,345.768 624.691,359.602 624.691,375.744L624.691,518.118C624.691,534.259 630.449,548.095 641.972,559.618C653.504,570.761 667.341,576.331 683.473,576.331C699.624,576.331 713.27,570.761 724.412,559.618C735.935,548.095 741.693,534.259 741.693,518.118L741.693,375.744C741.693,359.593 735.935,345.759 724.412,334.236C713.261,322.713 699.614,316.947 683.473,316.947Z'
+                                  style='fill-rule:nonzero;'/>
+                        </g>
+                    </svg>
+
+                    <span class="sr-only">Share on Misskey</span>
+                </a>
+                <a href="#"
+                   onclick="if(navigator.share) navigator.share({title: '${title}', url: '${Astro.url}'}); return false;"
+                   title="Share" class="native-share">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="18" cy="5" r="3"></circle>
+                        <circle cx="6" cy="12" r="3"></circle>
+                        <circle cx="18" cy="19" r="3"></circle>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                    <span class="sr-only">Share</span>
+                </a>
+            </div>
+        </div>
+    </article>
+</BaseLayout>
