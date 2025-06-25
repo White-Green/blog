@@ -90,6 +90,7 @@ const customStyles = `
 		height: 18px;
 	}
 `;
+const articleUrl = Astro.url.toString().replace(/\/$/, '');
 ---
 
 <BaseLayout title={title} description={description} customStyles={customStyles} image={heroImage}>
@@ -121,7 +122,7 @@ const customStyles = `
             <slot/>
 
             <div class="share-buttons">
-                <a href={`https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(Astro.url)}`}
+                <a href={`https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(articleUrl)}`}
                    target="_blank" title="Share on X">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path fill="currentColor"
@@ -129,7 +130,7 @@ const customStyles = `
                     </svg>
                     <span class="sr-only">Share on X</span>
                 </a>
-                <a href={`https://misskey-hub.net/share?renoteUri=${encodeURIComponent(Astro.url)}`}
+                <a href={`https://misskey-hub.net/share?renoteUri=${encodeURIComponent(articleUrl)}`}
                    target="_blank" title="Share on Misskey">
                     <svg class='bi' fill='currentColor' viewBox='0 0 160 160' version='1.1'
                          xmlns='http://www.w3.org/2000/svg' aria-hidden='true'
