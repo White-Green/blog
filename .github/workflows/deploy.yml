@@ -26,14 +26,24 @@ jobs:
       - name: Build site
         run: pnpm run build
 
+      # このリポジトリはfblog_systemのテスト用も兼ねているので@mainを参照しています
+      # stableなブランチがある場合はそちらを参照したほうがよいでしょう
       - uses: White-Green/fblog_system@main
         with:
+          # デプロイ先システム構成 今のところはcloudflare_workersだけ
           target: cloudflare_workers
+          # ビルド前のMarkdownデータがあるディレクトリ
           article_data_path: ${{ github.workspace }}/articles
+          # ユーザ情報を置いたディレクトリ
           user_data_path: ${{ github.workspace }}/users
+          # ビルド済みのファイル群があるディレクトリ
           build_data_path: ${{ github.workspace }}/dist
+          # なんか一意な名前(バックエンドシステムの命名などにつかいます)
           project_name: "white-green-blog"
+          # デプロイ先URL
           site_url: https://blog.white-green.net
+          # 公開鍵
           public_key_path: ${{ github.workspace }}/publickey.pem
+          # Cloudflareのアカウント情報とAPIトークン
           cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -7,15 +7,16 @@ export interface Props {
   title: string;
   description: string;
   customStyles?: string;
+  image?: string;
 }
 
-const { title, description, customStyles } = Astro.props;
+const { title, description, customStyles, image } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="ja">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} image={image} />
     {customStyles && (
       <style set:html={customStyles}></style>
     )}

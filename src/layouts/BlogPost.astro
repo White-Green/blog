@@ -87,7 +87,7 @@ const customStyles = `
 `;
 ---
 
-<BaseLayout title={title} description={description} customStyles={customStyles}>
+<BaseLayout title={title} description={description} customStyles={customStyles} image={heroImage}>
     <article>
         <div class="hero-image">
             {heroImage && <img width={1020} height={510} src={heroImage} alt=""/>}
@@ -124,7 +124,7 @@ const customStyles = `
                     </svg>
                     <span class="sr-only">Share on X</span>
                 </a>
-                <a href={`https://misskey.io/share?text=${encodeURIComponent(title)}&url=${encodeURIComponent(Astro.url)}`}
+                <a href={`https://misskey-hub.net/share?renoteUri=${encodeURIComponent(Astro.url)}`}
                    target="_blank" title="Share on Misskey">
                     <svg class='bi' fill='currentColor' viewBox='0 0 160 160' version='1.1'
                          xmlns='http://www.w3.org/2000/svg' aria-hidden='true'
