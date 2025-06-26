@@ -6,7 +6,7 @@ import {getCollection} from 'astro:content';
 
 export type Props = CollectionEntry<'articles'>['data'];
 
-const {id} = Astro.params;
+const {slug} = Astro.params;
 const {title, description, pubDate, updatedDate, heroImage, author} = Astro.props;
 
 // Get the user's display name
@@ -95,7 +95,7 @@ const customStyles = `
 const articleUrl = Astro.url.toString().replace(/\/$/, '');
 ---
 
-<BaseLayout title={title} description={description} customStyles={customStyles} image={heroImage ?? `/og/${id}.webp`}>
+<BaseLayout title={title} description={description} customStyles={customStyles} image={heroImage ?? `/og/${slug}.webp`}>
     <article>
         <div class="hero-image">
             {heroImage && <img width={1020} height={510} src={heroImage} alt=""/>}

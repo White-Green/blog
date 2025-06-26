@@ -13,22 +13,12 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-// Check if the current page is an article page
-const isArticlePage = Astro.url.pathname.startsWith('/articles/');
-const slug = isArticlePage ? Astro.url.pathname.split('/articles/')[1].replace(/\/$/, '') : '';
-
-// Generate OG image URL for articles
-const ogImageUrl = isArticlePage && slug
-    ? new URL(`/og/${slug}.webp`, Astro.site).toString()
-    : undefined;
-
 const {title, description, image} = Astro.props;
 
 // For non-article pages like the home page (/), we might not want to force an OGP image
 // Only set finalImage and imageUrl if image is defined
 const hasOgp = image !== undefined;
-const finalImage = hasOgp ? (image || ogImageUrl || '/blog-placeholder-1.jpg') : undefined;
-const imageUrl = finalImage ? new URL(finalImage, Astro.site).toString() : undefined;
+const imageUrl = hasOgp ? new URL(image, Astro.site).toString() : undefined;
 ---
 
 <!-- Global Metadata -->
