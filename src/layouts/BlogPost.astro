@@ -2,7 +2,7 @@
 import type {CollectionEntry} from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import { getCollection } from 'astro:content';
+import {getCollection} from 'astro:content';
 
 export type Props = CollectionEntry<'articles'>['data'];
 
@@ -145,7 +145,10 @@ const articleUrl = Astro.url.toString().replace(/\/$/, '');
                     <span class="sr-only">Share on Misskey</span>
                 </a>
                 <a href="#"
-                   onclick="if(navigator.share) navigator.share({title: '${title}', url: '${Astro.url}'}); return false;"
+                   onclick={`if(navigator.share) navigator.share(${JSON.stringify({
+                       title,
+                       url: articleUrl
+                   })}); return false;`}
                    title="Share" class="native-share">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
