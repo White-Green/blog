@@ -106,6 +106,7 @@ const customStyles = `
 			<ul class="post-list">
 				{authorPosts.map(post => (
 					<li class="post-item">
+						<img width={1200} height={630} src={post.data.heroImage ?? `/og/${post.id}.webp`} alt={`Cover image of article ${post.data.title}`}/>
 						<a class="post-link" href={`/articles/${post.id}/`}>{post.data.title}</a>
 						<p class="post-date">
 							<FormattedDate date={post.data.pubDate} />
