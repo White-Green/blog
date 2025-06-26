@@ -6,11 +6,13 @@ import {getCollection} from 'astro:content';
 
 export type Props = CollectionEntry<'articles'>['data'];
 
+const {id} = Astro.params;
 const {title, description, pubDate, updatedDate, heroImage, author} = Astro.props;
 
 // Get the user's display name
 const users = await getCollection('users');
 const userData = users.find(user => user.id === author);
+if (userData === undefined) throw new Error(`User ${author} not found`)
 
 const customStyles = `
 	main {
@@ -93,7 +95,7 @@ const customStyles = `
 const articleUrl = Astro.url.toString().replace(/\/$/, '');
 ---
 
-<BaseLayout title={title} description={description} customStyles={customStyles} image={heroImage}>
+<BaseLayout title={title} description={description} customStyles={customStyles} image={heroImage ?? `/og/${id}.webp`}>
     <article>
         <div class="hero-image">
             {heroImage && <img width={1020} height={510} src={heroImage} alt=""/>}
@@ -114,7 +116,7 @@ const articleUrl = Astro.url.toString().replace(/\/$/, '');
                 <h1>{title}</h1>
                 {author && (
                         <div class="author">
-                            By <a href={`/users/${author}`}>{userData?.data.name || author}</a>
+                            By <a href={`/users/${author}`}>{userData.data.name || author}</a>
                         </div>
                 )}
                 <hr/>
