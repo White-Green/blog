@@ -1,19 +1,19 @@
 ---
-import { getCollection } from 'astro:content';
+import {getCollection} from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { SITE_TITLE } from '../../consts';
+import {SITE_TITLE} from '../../consts';
 import FormattedDate from "../../components/FormattedDate.astro";
 
 export async function getStaticPaths() {
     const users = await getCollection('users');
     return users.map(user => ({
-        params: { username: user.id },
-        props: { user },
+        params: {username: user.id},
+        props: {user},
     }));
 }
 
-const { username } = Astro.params;
-const { user } = Astro.props;
+const {username} = Astro.params;
+const {user} = Astro.props;
 
 // Get all blog posts by this author
 const allPosts = await getCollection('articles');
@@ -88,32 +88,35 @@ const customStyles = `
 ---
 
 <BaseLayout title={`${user.data.name} - ${SITE_TITLE}`} description={user.data.bio} customStyles={customStyles}>
-	<div class="user-profile">
-		{user.data.avatar && <img class="avatar" src={user.data.avatar} alt={user.data.name} />}
-		<h1 class="user-name">{user.data.name}</h1>
-		<p class="user-bio">{user.data.bio}</p>
+    <div class="user-profile">
+        {user.data.avatar && <img class="avatar" src={user.data.avatar} alt={user.data.name}/>}
+        <h1 class="user-name">{user.data.name}</h1>
+        <p class="user-bio">{user.data.bio}</p>
 
-		<div class="social-links">
-			{user.data.website && <a href={user.data.website} target="_blank">Website</a>}
-			{user.data.twitter && <a href={`https://x.com/${user.data.twitter}`} target="_blank">X</a>}
-			{user.data.github && <a href={`https://github.com/${user.data.github}`} target="_blank">GitHub</a>}
-		</div>
-	</div>
+        <div class="social-links">
+            {user.data.website && <a href={user.data.website} target="_blank">Website</a>}
+            {user.data.twitter && <a href={`https://x.com/${user.data.twitter}`} target="_blank">X</a>}
+            {user.data.github && <a href={`https://github.com/${user.data.github}`} target="_blank">GitHub</a>}
+        </div>
+    </div>
 
-	{authorPosts.length > 0 && (
-		<div class="posts-section">
-			<h2>Articles by {user.data.name}</h2>
-			<ul class="post-list">
-				{authorPosts.map(post => (
-					<li class="post-item">
-						<img width={1200} height={630} src={post.data.heroImage ?? `/og/${post.id}.webp`} alt={`Cover image of article ${post.data.title}`}/>
-						<a class="post-link" href={`/articles/${post.id}/`}>{post.data.title}</a>
-						<p class="post-date">
-							<FormattedDate date={post.data.pubDate} />
-						</p>
-					</li>
-				))}
-			</ul>
-		</div>
-	)}
+    {authorPosts.length > 0 && (
+            <div class="posts-section">
+                <h2>Articles by {user.data.name}</h2>
+                <ul class="post-list">
+                    {authorPosts.map(post => (
+                            <li class="post-item">
+                                <a class="post-link" href={`/articles/${post.id}/`}>
+                                    <img width={1200} height={630} src={post.data.heroImage ?? `/og/${post.id}.webp`}
+                                         alt={`Cover image of article ${post.data.title}`}/>
+                                    {post.data.title}
+                                </a>
+                                <p class="post-date">
+                                    <FormattedDate date={post.data.pubDate}/>
+                                </p>
+                            </li>
+                    ))}
+                </ul>
+            </div>
+    )}
 </BaseLayout>
