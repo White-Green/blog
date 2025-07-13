@@ -17,7 +17,9 @@ const {user} = Astro.props;
 
 // Get all blog posts by this author
 const allPosts = await getCollection('articles');
-const authorPosts = allPosts.filter(post => post.data.author === username);
+const authorPosts = allPosts
+    .filter(post => post.data.author === username)
+    .sort((a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf());
 
 const customStyles = `
 	.user-profile {
