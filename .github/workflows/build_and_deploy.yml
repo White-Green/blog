@@ -1,6 +1,7 @@
 name: Build & Deploy
 on:
   push:
+concurrency: group-${{ github.ref_name }}
 
 jobs:
   build_and_deploy:
