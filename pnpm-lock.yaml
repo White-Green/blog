@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@astrojs/mdx':
     specifier: ^4.3.13
-    version: 4.3.13(astro@5.16.16)
+    version: 4.3.13(astro@5.17.1)
   '@astrojs/react':
     specifier: ^4.4.2
     version: 4.4.2(@types/react-dom@19.2.3)(@types/react@19.2.10)(react-dom@19.2.4)(react@19.2.4)
@@ -24,8 +24,8 @@ dependencies:
     specifier: ^19.2.3
     version: 19.2.3(@types/react@19.2.10)
   astro:
-    specifier: ^5.16.16
-    version: 5.16.16(typescript@5.9.3)
+    specifier: ^5.17.1
+    version: 5.17.1(typescript@5.9.3)
   astro-seo:
     specifier: ^1.1.0
     version: 1.1.0(typescript@5.9.3)
@@ -151,7 +151,7 @@ packages:
       - supports-color
     dev: false
 
-  /@astrojs/mdx@4.3.13(astro@5.16.16):
+  /@astrojs/mdx@4.3.13(astro@5.17.1):
     resolution: {integrity: sha512-IHDHVKz0JfKBy3//52JSiyWv089b7GVSChIXLrlUOoTLWowG3wr2/8hkaEgEyd/vysvNQvGk+QhysXpJW5ve6Q==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
     peerDependencies:
@@ -160,7 +160,7 @@ packages:
       '@astrojs/markdown-remark': 6.3.10
       '@mdx-js/mdx': 3.1.1
       acorn: 8.15.0
-      astro: 5.16.16(typescript@5.9.3)
+      astro: 5.17.1(typescript@5.9.3)
       es-module-lexer: 1.7.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -232,7 +232,7 @@ packages:
     resolution: {integrity: sha512-UFBgfeldP06qu6khs/yY+q1cDAaArM2/7AEIqQ9Cuvf7B1hNLq0xDrZkct+QoIGyjq56y8IaE2I3CTvG99mlhQ==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
     dependencies:
-      ci-info: 4.3.1
+      ci-info: 4.4.0
       debug: 4.4.3
       dlv: 1.1.3
       dset: 3.1.4
@@ -1602,8 +1602,8 @@ packages:
       - typescript
     dev: false
 
-  /astro@5.16.16(typescript@5.9.3):
-    resolution: {integrity: sha512-MFlFvQ84ixaHyqB3uGwMhNHdBLZ3vHawyq3PqzQS2TNWiNfQrxp5ag6S3lX+Cvnh0MUcXX+UnJBPMBHjP1/1ZQ==}
+  /astro@5.17.1(typescript@5.9.3):
+    resolution: {integrity: sha512-oD3tlxTaVWGq/Wfbqk6gxzVRz98xa/rYlpe+gU2jXJMSD01k6sEDL01ZlT8mVSYB/rMgnvIOfiQQ3BbLdN237A==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
     dependencies:
@@ -1618,7 +1618,7 @@ packages:
       aria-query: 5.3.2
       axobject-query: 4.1.0
       boxen: 8.0.1
-      ci-info: 4.3.1
+      ci-info: 4.4.0
       clsx: 2.1.1
       common-ancestor-path: 1.0.1
       cookie: 1.1.1
@@ -1820,8 +1820,8 @@ packages:
       readdirp: 5.0.0
     dev: false
 
-  /ci-info@4.3.1:
-    resolution: {integrity: sha512-Wdy2Igu8OcBpI2pZePZ5oWjPC38tmDVx5WKUXKwlLYkA0ozo85sLsLvkBbBn/sZaSCMFOGZJ14fvW9t5/d7kdA==}
+  /ci-info@4.4.0:
+    resolution: {integrity: sha512-77PSwercCZU2Fc4sX94eF8k8Pxte6JAwL4/ICZLFjJLqegs7kCuAsqqj/70NQF6TvDpgFjkubQB2FW2ZZddvQg==}
     engines: {node: '>=8'}
     dev: false
 
@@ -2413,7 +2413,7 @@ packages:
       mdast-util-to-hast: 13.2.1
       parse5: 7.3.0
       unist-util-position: 5.0.0
-      unist-util-visit: 5.1.0
+      unist-util-visit: 5.0.0
       vfile: 6.0.3
       web-namespaces: 2.0.1
       zwitch: 2.0.4
@@ -2928,7 +2928,7 @@ packages:
       micromark-util-sanitize-uri: 2.0.1
       trim-lines: 3.0.1
       unist-util-position: 5.0.0
-      unist-util-visit: 5.1.0
+      unist-util-visit: 5.0.0
       vfile: 6.0.3
     dev: false
 
@@ -3734,7 +3734,7 @@ packages:
       retext: 9.0.0
       retext-smartypants: 6.2.0
       unified: 11.0.5
-      unist-util-visit: 5.1.0
+      unist-util-visit: 5.0.0
     dev: false
 
   /remark-stringify@11.0.0:
@@ -3776,7 +3776,7 @@ packages:
     dependencies:
       '@types/nlcst': 2.0.3
       nlcst-to-string: 4.0.0
-      unist-util-visit: 5.1.0
+      unist-util-visit: 5.0.0
     dev: false
 
   /retext-stringify@4.0.0:
