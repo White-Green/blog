@@ -57,7 +57,7 @@ jobs:
 
       # このリポジトリはfblog_systemのテスト用も兼ねているので@mainを参照しています
       # stableなブランチがある場合はそちらを参照したほうがよいでしょう
-      - uses: White-Green/fblog_system@main
+      - uses: White-Green/fblog_system@preview
         if: ${{ github.ref_name == github.event.repository.default_branch }}
         with:
           # デプロイ先システム構成 今のところはcloudflare_workersだけ
@@ -155,7 +155,7 @@ jobs:
 
       # このリポジトリはfblog_systemのテスト用も兼ねているので@mainを参照しています
       # stableなブランチがある場合はそちらを参照したほうがよいでしょう
-      - uses: White-Green/fblog_system@main
+      - uses: White-Green/fblog_system@preview
         id: deploy_preview
         if: ${{ github.ref_name == github.event.repository.default_branch }}
         with:
