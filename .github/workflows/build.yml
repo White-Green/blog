@@ -45,6 +45,11 @@ jobs:
           name: users
           path: users
 
+      - uses: actions/upload-artifact@v6
+        with:
+          name: publickey
+          path: publickey.pem
+
       - uses: actions/github-script@v8
         env:
           SUCCESSOR_NAME: ${{ github.event_name == 'pull_request' && 'deploy-preview' || 'deploy' }}

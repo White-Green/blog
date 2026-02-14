@@ -48,6 +48,13 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
 
+      - uses: actions/download-artifact@v7
+        with:
+          name: publickey
+          path: publickey.pem
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
       # このリポジトリはfblog_systemのテスト用も兼ねているので@mainを参照しています
       # stableなブランチがある場合はそちらを参照したほうがよいでしょう
       - uses: White-Green/fblog_system@main
@@ -136,6 +143,13 @@ jobs:
         with:
           name: users
           path: ./users
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: publickey
+          path: publickey.pem
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
 
