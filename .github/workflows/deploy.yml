@@ -51,7 +51,7 @@ jobs:
       - uses: actions/download-artifact@v7
         with:
           name: publickey
-          path: publickey.pem
+          path: .
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
 
@@ -149,7 +149,7 @@ jobs:
       - uses: actions/download-artifact@v7
         with:
           name: publickey
-          path: publickey.pem
+          path: .
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
 
