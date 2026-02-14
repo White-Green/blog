@@ -1,0 +1,238 @@
+name: deploy
+on:
+  workflow_run:
+    workflows: ["build"]
+    types: [completed]
+
+jobs:
+  deploy:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      statuses: write
+    steps:
+      - uses: actions/github-script@v8
+        env:
+          RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        with:
+         script: |
+           const { owner, repo } = context.repo;
+           const sha = context.payload.workflow_run.head_sha;
+           
+           await github.rest.repos.createCommitStatus({
+             owner, repo, sha,
+             state: "pending",
+             context: "deploy / deploy",
+             target_url: process.env.RUN_URL,
+           });
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: site
+          path: ./dist
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      # このリポジトリはfblog_systemのテスト用も兼ねているので@mainを参照しています
+      # stableなブランチがある場合はそちらを参照したほうがよいでしょう
+      - uses: White-Green/fblog_system@main
+        if: ${{ github.ref_name == github.event.repository.default_branch }}
+        with:
+          # デプロイ先システム構成 今のところはcloudflare_workersだけ
+          target: cloudflare_workers
+          # ビルド前のMarkdownデータがあるディレクトリ
+          article_data_path: ${{ github.workspace }}/articles
+          # ユーザ情報を置いたディレクトリ
+          user_data_path: ${{ github.workspace }}/users
+          # ビルド済みのファイル群があるディレクトリ
+          build_data_path: ${{ github.workspace }}/dist
+          # なんか一意な名前(バックエンドシステムの命名などにつかいます)
+          project_name: "white-green-blog"
+          # デプロイ先URL
+          site_url: https://blog.white-green.net
+          # 公開鍵
+          public_key_path: ${{ github.workspace }}/publickey.pem
+          # Cloudflareのアカウント情報とAPIトークン
+          cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - if: always()
+        uses: actions/github-script@v8
+        env:
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const sha = context.payload.workflow_run.head_sha;
+            
+            const jobStatus = process.env.JOB_STATUS; // success|failure|cancelled
+            const mapping = {
+              success: "success",
+              failure: "failure",
+              cancelled: "error",
+            };
+            await github.rest.repos.createCommitStatus({
+              owner, repo, sha,
+              state: mapping[jobStatus],
+              context: "deploy / deploy",
+              target_url: process.env.RUN_URL,
+            });
+
+  deploy_preview:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      issues: write
+      pull-requests: write
+      statuses: write
+    steps:
+      - uses: actions/github-script@v8
+        env:
+          RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const sha = context.payload.workflow_run.head_sha;
+            
+            await github.rest.repos.createCommitStatus({
+              owner, repo, sha,
+              state: "pending",
+              context: "deploy / deploy-preview",
+              target_url: process.env.RUN_URL,
+            });
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: site
+          path: ./dist
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      # このリポジトリはfblog_systemのテスト用も兼ねているので@mainを参照しています
+      # stableなブランチがある場合はそちらを参照したほうがよいでしょう
+      - uses: White-Green/fblog_system@main
+        id: deploy_preview
+        if: ${{ github.ref_name == github.event.repository.default_branch }}
+        with:
+          # デプロイ先システム構成 今のところはcloudflare_workersだけ
+          target: cloudflare_workers
+          # プレビューの名称を指定するとプレビューとしてデプロイされる
+          preview_name: pr-${{ github.event.workflow_run.pull_requests[0].number }}
+          # ビルド前のMarkdownデータがあるディレクトリ
+          article_data_path: ${{ github.workspace }}/articles
+          # ユーザ情報を置いたディレクトリ
+          user_data_path: ${{ github.workspace }}/users
+          # ビルド済みのファイル群があるディレクトリ
+          build_data_path: ${{ github.workspace }}/dist
+          # なんか一意な名前(バックエンドシステムの命名などにつかいます)
+          project_name: "white-green-blog"
+          # デプロイ先URL
+          site_url: https://blog.white-green.net
+          # 公開鍵
+          public_key_path: ${{ github.workspace }}/publickey.pem
+          # Cloudflareのアカウント情報とAPIトークン
+          cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - uses: actions/github-script@v8
+        env:
+          PREVIEW_URL: ${{ steps.deploy_preview.outputs.preview_url }}
+          EVENTS_PATH: ${{ steps.deploy_preview.outputs.events_jsonl }}
+        with:
+          script: |
+            const fs = require('fs');
+            const issue_number = context.payload.workflow_run.pull_requests[0].number;
+            const previewUrl = process.env.PREVIEW_URL;
+            const eventsPath = process.env.EVENTS_PATH;
+
+            let events = [];
+            if (eventsPath && fs.existsSync(eventsPath)) {
+              const content = fs.readFileSync(eventsPath, 'utf8');
+              events = content.trim().split('\n').filter(line => line).map(line => JSON.parse(line));
+            }
+
+            const eventsMap = events.reduce((acc, event) => {
+              const mapping = {
+                'DeliveryNewArticleToAll': '新規',
+                'DeliveryUpdateArticleToAll': '編集',
+                'DeliveryDeleteArticleToAll': '削除'
+              };
+              acc[event.slug] = mapping[event.event_type] || event.event_type;
+              return acc;
+            }, {});
+
+            const marker = '<!-- preview-deploy-marker -->';
+
+            let body = marker + '\n' +
+                       '## Preview\n\n' +
+                       '[Preview](' + previewUrl + ')\n\n';
+
+            if (Object.keys(eventsMap).length === 0) {
+              body += '変更なし';
+            } else {
+              body += '| Article (slug) | Change |\n' +
+                      '|----------------|--------|\n';
+              for (const [slug, change] of Object.entries(eventsMap)) {
+                body += `| ${slug} | ${change} |\n`;
+              }
+            }
+
+            const { owner, repo } = context.repo;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+            const oldComments = comments.filter(comment => comment.body.includes(marker));
+            for (const { node_id: nodeId } of oldComments) {
+              const mutation = `
+                mutation($subjectId: ID!) {
+                  minimizeComment(input: {
+                    subjectId: $subjectId,
+                    classifier: OUTDATED
+                  }) {
+                    minimizedComment {
+                      isMinimized
+                      minimizedReason
+                    }
+                  }
+                }
+              `;
+
+              await github.graphql(mutation, { subjectId: nodeId });
+            }
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number,
+              body,
+            });
+
+      - if: always()
+        uses: actions/github-script@v8
+        env:
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const sha = context.payload.workflow_run.head_sha;
+            
+            const jobStatus = process.env.JOB_STATUS; // success|failure|cancelled
+            const mapping = {
+              success: "success",
+              failure: "failure",
+              cancelled: "error",
+            };
+            await github.rest.repos.createCommitStatus({
+              owner, repo, sha,
+              state: mapping[jobStatus],
+              context: "deploy / deploy-preview",
+              target_url: process.env.RUN_URL,
+            });
