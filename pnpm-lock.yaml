@@ -54,8 +54,8 @@ dependencies:
     specifier: ^11.1.2
     version: 11.1.2
   satori:
-    specifier: ^0.21.0
-    version: 0.21.0
+    specifier: ^0.24.1
+    version: 0.24.1
   sharp:
     specifier: ^0.34.5
     version: 0.34.5
@@ -4017,8 +4017,8 @@ packages:
       fsevents: 2.3.3
     dev: false
 
-  /satori@0.21.0:
-    resolution: {integrity: sha512-PV5II6Z+gsFFLq4jp6mslt0ObNRzcTi5Xq+8JtJ3ReqBS9k4nF4ajqITFXygPZgRA6l5+22NYIS1WRTqTfDp5g==}
+  /satori@0.24.1:
+    resolution: {integrity: sha512-Lqj26wYdMjGR1AE/cwYkcpAFdf1EG0y0amitwu1+JnwCIrGd7cOI+Olap6ASeeOI58wydF0sfs8JET61XM0j/Q==}
     engines: {node: '>=16'}
     dependencies:
       '@shuding/opentype.js': 1.4.0-beta.0
