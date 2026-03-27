@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@astrojs/mdx':
     specifier: ^5.0.3
-    version: 5.0.3(astro@6.1.0)
+    version: 5.0.3(astro@6.1.1)
   '@astrojs/react':
     specifier: ^5.0.2
     version: 5.0.2(@types/react-dom@19.2.3)(@types/react@19.2.14)(react-dom@19.2.4)(react@19.2.4)
@@ -24,8 +24,8 @@ dependencies:
     specifier: ^19.2.3
     version: 19.2.3(@types/react@19.2.14)
   astro:
-    specifier: ^6.1.0
-    version: 6.1.0(typescript@5.9.3)
+    specifier: ^6.1.1
+    version: 6.1.1(typescript@5.9.3)
   astro-seo:
     specifier: ^1.1.0
     version: 1.1.0(typescript@5.9.3)
@@ -157,7 +157,7 @@ packages:
       - supports-color
     dev: false
 
-  /@astrojs/mdx@5.0.3(astro@6.1.0):
+  /@astrojs/mdx@5.0.3(astro@6.1.1):
     resolution: {integrity: sha512-zv/OlM5sZZvyjHqJjR3FjJvoCgbxdqj3t4jO/gSEUNcck3BjdtMgNQw8UgPfAGe4yySdG4vjZ3OC5wUxhu7ckg==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
@@ -166,7 +166,7 @@ packages:
       '@astrojs/markdown-remark': 7.1.0
       '@mdx-js/mdx': 3.1.1
       acorn: 8.16.0
-      astro: 6.1.0(typescript@5.9.3)
+      astro: 6.1.1(typescript@5.9.3)
       es-module-lexer: 2.0.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -1605,8 +1605,8 @@ packages:
       - typescript
     dev: false
 
-  /astro@6.1.0(typescript@5.9.3):
-    resolution: {integrity: sha512-J8XGJQo5+W2wJLdUbQHVho4DHWDM6V4Dp8s+z0Fs3O/mcu3WjbTBELOv/MC7ueoqmQ/Jts6Bz7FJwbAopbFd+g==}
+  /astro@6.1.1(typescript@5.9.3):
+    resolution: {integrity: sha512-vq8sHpu1JsY1fWAunn+tdKNbVDmLQNiVdyuGsVT2csgITdFGXXVAyEXFWc1DzkMN0ehElPeiHnqItyQOJK+GqA==}
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
     dependencies:
@@ -1658,7 +1658,7 @@ packages:
       ultrahtml: 1.6.0
       unifont: 0.7.4
       unist-util-visit: 5.1.0
-      unstorage: 1.17.4
+      unstorage: 1.17.5
       vfile: 6.0.3
       vite: 7.3.1
       vitefu: 1.1.2(vite@7.3.1)
@@ -4038,8 +4038,8 @@ packages:
       unist-util-visit-parents: 6.0.2
     dev: false
 
-  /unstorage@1.17.4:
-    resolution: {integrity: sha512-fHK0yNg38tBiJKp/Vgsq4j0JEsCmgqH58HAn707S7zGkArbZsVr/CwINoi+nh3h98BRCwKvx1K3Xg9u3VV83sw==}
+  /unstorage@1.17.5:
+    resolution: {integrity: sha512-0i3iqvRfx29hkNntHyQvJTpf5W9dQ9ZadSoRU8+xVlhVtT7jAX57fazYO9EHvcRCfBCyi5YRya7XCDOsbTgkPg==}
     peerDependencies:
       '@azure/app-configuration': ^1.8.0
       '@azure/cosmos': ^4.2.0
