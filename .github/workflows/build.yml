@@ -50,7 +50,7 @@ jobs:
           name: publickey
           path: publickey.pem
 
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@v9
         env:
           SUCCESSOR_NAME: ${{ github.event_name == 'pull_request' && 'deploy-preview' || 'deploy' }}
         with:

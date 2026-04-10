@@ -12,7 +12,7 @@ jobs:
       actions: read
       statuses: write
     steps:
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@v9
         env:
           RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         with:
@@ -79,7 +79,7 @@ jobs:
           cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - if: always()
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           JOB_STATUS: ${{ job.status }}
           RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
@@ -110,7 +110,7 @@ jobs:
       pull-requests: write
       statuses: write
     steps:
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@v9
         env:
           RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         with:
@@ -179,7 +179,7 @@ jobs:
           cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@v9
         env:
           PREVIEW_URL: ${{ steps.deploy_preview.outputs.preview_url }}
           EVENTS_PATH: ${{ steps.deploy_preview.outputs.events_jsonl }}
@@ -257,7 +257,7 @@ jobs:
             });
 
       - if: always()
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           JOB_STATUS: ${{ job.status }}
           RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
