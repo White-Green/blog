@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  extends: ["config:recommended"],
+
+  minimumReleaseAge: "3 days",
+
+  packageRules: [
+    {
+      description: "Group npm package patch/minor updates into one PR.",
+      matchManagers: ["npm"],
+      matchUpdateTypes: ["patch", "minor"],
+      groupName: "npm package patch/minor updates",
+      groupSlug: "npm-package-patch-minor",
+    },
+  ],
+}
