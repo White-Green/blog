@@ -10,6 +10,7 @@
       description: "Group npm package patch/minor updates into one PR.",
       matchManagers: ["npm"],
       matchUpdateTypes: ["patch", "minor"],
+      matchJsonata: ["isBreaking != true"],
       groupName: "npm package patch/minor updates",
       groupSlug: "npm-package-patch-minor",
     },
